@@ -15,12 +15,20 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * class -> User ServiceImpl
+ */
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
+    /**
+     *
+     * @param userPostRequest
+     * @return userGetRequest
+     */
     @Override
     @Transactional
     public UserGetResponse create(UserPostRequest userPostRequest) {
@@ -30,6 +38,11 @@ public class UserServiceImpl implements UserService{
         return modelMapper.map(saved, UserGetResponse.class);
     }
 
+    /**
+     *
+     * @param id
+     * @return userGetRequest
+     */
     @Override
     public UserGetResponse get(Long id) {
         Optional<UserEntity> userEntity = userRepository.findById(id);
@@ -39,12 +52,23 @@ public class UserServiceImpl implements UserService{
         throw new NoDataFoundException("no user found with id: " + id);
     }
 
+    /**
+     *
+     * @param id
+     * @return 0
+     */
     @Override
     @Transactional
     public int delete(Long id) {
         return 0;
     }
 
+    /**
+     *
+     * @param limit
+     * @param offset
+     * @return userGetResponse list
+     */
     @Override
     public List<UserGetResponse> getAll(int limit, int offset) {
         List<UserEntity> userEntities = userRepository.getAll(limit, offset);
@@ -54,6 +78,10 @@ public class UserServiceImpl implements UserService{
         }.getType());
     }
 
+    /**
+     *
+     * @param username
+     */
     void checkExist(String username){
          if (userRepository.findByName(username).isPresent())
             throw new DataAlreadyExistException("user with username: \"" + username + "\" already exists");

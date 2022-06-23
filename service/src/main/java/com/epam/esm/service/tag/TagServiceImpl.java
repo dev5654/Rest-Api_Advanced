@@ -13,16 +13,25 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * class -> TagServiceImpl
+ */
 @Service
 public class TagServiceImpl implements TagService {
     private final TagRepository tagRepository;
     private final ModelMapper modelMapper;
+
 
     public TagServiceImpl(TagRepository tagRepository, ModelMapper modelMapper) {
         this.tagRepository = tagRepository;
         this.modelMapper = modelMapper;
     }
 
+    /**
+     *
+     * @param createTag
+     * @return TagGetResponse
+     */
     @Override
     @Transactional
     public TagGetResponse create(TagPostRequest createTag) {
@@ -31,6 +40,11 @@ public class TagServiceImpl implements TagService {
         return modelMapper.map(createdTag, TagGetResponse.class);
     }
 
+    /**
+     *
+     * @param tagId
+     * @return TagGetResponse
+     */
     @Override
     public TagGetResponse get(Long tagId) {
         Optional<TagEntity> tagOptional = tagRepository.findById(tagId);
@@ -39,19 +53,34 @@ public class TagServiceImpl implements TagService {
         throw new NoDataFoundException("no tag found with id: " + tagId);
     }
 
+    /**
+     *
+     * @param tagId
+     * @return deletedTagId
+     */
     @Override
     @Transactional
     public int delete(Long tagId) {
         return tagRepository.delete(tagId);
     }
 
-
+    /**
+     *
+     * @param limit
+     * @param offset
+     * @return TagGetResponse list
+     */
     @Override
     public List<TagGetResponse> getAll(int limit, int offset) {
         List<TagEntity> allTags = tagRepository.getAll(limit, offset);
         return modelMapper.map(allTags, new TypeToken<List<TagGetResponse>>() {}.getType());
     }
 
+    /**
+     *
+     * @param userId
+     * @return list of most widely used tags list
+     */
     @Override
     public List<TagGetResponse> getMostWidelyUsedTagsOfUser(Long userId) {
         List<TagEntity> mostWidelyUserTagsOfUser = tagRepository.getMostWidelyUserTagOfUser(userId);

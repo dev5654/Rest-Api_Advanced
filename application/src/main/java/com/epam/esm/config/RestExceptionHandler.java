@@ -29,6 +29,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         );
     }
 
+
     @ExceptionHandler(PSQLException.class)
     public ResponseEntity<BaseExceptionResponse> psqlExceptionHandler(PSQLException e) {
         return ResponseEntity.status(400).body(

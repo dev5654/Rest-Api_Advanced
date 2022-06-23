@@ -22,6 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * class -> GiftCertificateServiceImpl
+ */
 @Service
 @RequiredArgsConstructor
 public class GiftCertificateServiceImpl implements GiftCertificateService{
@@ -29,6 +32,11 @@ public class GiftCertificateServiceImpl implements GiftCertificateService{
     private final TagRepository tagRepository;
     private final ModelMapper modelMapper;
 
+    /**
+     *
+     * @param createCertificate
+     * @return GiftCertificateGetResponse(Gift Certificate)
+     */
     @Override
     @Transactional
     public GiftCertificateGetResponse create(GiftCertificatePostRequest createCertificate) {
@@ -40,12 +48,22 @@ public class GiftCertificateServiceImpl implements GiftCertificateService{
         return modelMapper.map(saved, GiftCertificateGetResponse.class);
     }
 
+    /**
+     *
+     * @param certificateId
+     * @return GiftCertificateGetResponse(Gift Certificate)
+     */
     @Override
     public GiftCertificateGetResponse get(Long certificateId) {
         GiftCertificateEntity certificate = giftCertificateRepository.findById(certificateId).get();
         return modelMapper.map(certificate, GiftCertificateGetResponse.class);
     }
 
+    /**
+     *
+     * @param certificateId
+     * @return id of deleted Gift Certificate
+     */
     @Override
     @Transactional
     public int delete(Long certificateId) {
@@ -59,6 +77,17 @@ public class GiftCertificateServiceImpl implements GiftCertificateService{
         throw new NoDataFoundException("no certificate to delete with id: " + certificateId);
     }
 
+    /**
+     *
+     * @param searchWord
+     * @param tagName
+     * @param doNameSort
+     * @param doDateSort
+     * @param isDescending
+     * @param limit
+     * @param offset
+     * @return Requested Gift Certificate
+     */
     @Override
     public List<GiftCertificateGetResponse> getAll(
             String searchWord, String tagName, boolean doNameSort, boolean doDateSort,
@@ -84,6 +113,12 @@ public class GiftCertificateServiceImpl implements GiftCertificateService{
         return modelMapper.map(certificateEntities, new TypeToken<List<GiftCertificateGetResponse>>() {}.getType());
     }
 
+    /**
+     *
+     * @param update
+     * @param certificateId
+     * @return updated Gift Certificate
+     */
     @Override
     @Transactional
     public GiftCertificateGetResponse update(GiftCertificateUpdateRequest update, Long certificateId)
@@ -107,6 +142,12 @@ public class GiftCertificateServiceImpl implements GiftCertificateService{
         return modelMapper.map(updated, GiftCertificateGetResponse.class);
     }
 
+    /**
+     *
+     * @param duration
+     * @param id
+     * @return duration updated Gift Certificate
+     */
     @Override
     @Transactional
     public GiftCertificateGetResponse updateDuration(Integer duration, Long id) {
@@ -121,6 +162,13 @@ public class GiftCertificateServiceImpl implements GiftCertificateService{
         throw new NoDataFoundException("cannot find gift certificate with id: " + id);
     }
 
+    /**
+     *
+     * @param tags
+     * @param limit
+     * @param offset
+     * @return Gift Certificate list
+     */
     @Override
     public List<GiftCertificateGetResponse> searchWithMultipleTags(
             List<String> tags, int limit, int offset)
@@ -137,6 +185,11 @@ public class GiftCertificateServiceImpl implements GiftCertificateService{
         return modelMapper.map(certificateEntities, new TypeToken<List<GiftCertificateGetResponse>>() {}.getType());
     }
 
+    /**
+     *
+     * @param tagEntities
+     * @return created tag list
+     */
     private List<TagEntity> createTags(List<TagEntity> tagEntities) {
         List<TagEntity> tagEntityList = new ArrayList<>();
         tagEntities.forEach(tag -> {
@@ -153,6 +206,11 @@ public class GiftCertificateServiceImpl implements GiftCertificateService{
         return tagEntityList;
     }
 
+    /**
+     *
+     * @param id
+     * @return boolean
+     */
     private boolean checkExist(Long id) {
         return giftCertificateRepository.findById(id).isPresent();
     }
