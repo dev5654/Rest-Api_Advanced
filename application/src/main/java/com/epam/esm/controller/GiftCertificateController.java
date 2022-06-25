@@ -9,6 +9,7 @@ import com.epam.esm.exception.InvalidInputException;
 import com.epam.esm.exception.UnknownDataBaseException;
 import com.epam.esm.service.gift_certificate.GiftCertificateService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,7 @@ public class GiftCertificateController {
             throw new InvalidInputException(bindingResult);
         GiftCertificateGetResponse response = giftCertificateService.create(createCertificate);
         accept(response);
-        return ResponseEntity.status(201)
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new BaseResponse<>(201, "certificate created", response));
     }
 

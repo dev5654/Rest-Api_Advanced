@@ -6,6 +6,7 @@ import com.epam.esm.dto.request.UserPostRequest;
 import com.epam.esm.exception.InvalidInputException;
 import com.epam.esm.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class UserController {
         UserGetResponse createdUser = userService.create(userPostRequest);
         createdUser.add(linkTo(methodOn(OrderController.class)
                 .getUserOrders(createdUser.getId(), 100, 0)).withRel("user orders"));
-        return ResponseEntity.status(201).body(new BaseResponse<>(200, "user created", createdUser));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponse<>(200, "user created", createdUser));
     }
 
     @GetMapping("/get")

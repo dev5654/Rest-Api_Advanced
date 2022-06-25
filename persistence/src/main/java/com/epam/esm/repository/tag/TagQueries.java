@@ -1,3 +1,4 @@
+/*
 package com.epam.esm.repository.tag;
 
 public interface TagQueries {
@@ -12,3 +13,4 @@ public interface TagQueries {
                                       (select o.certificate_id from orders o where o.user_id = :userId)
                                              group by (ct.tag_id) order by count(ct.tag_id) desc limit 1))""";
 }
+*/

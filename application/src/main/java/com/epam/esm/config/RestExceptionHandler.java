@@ -32,7 +32,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(PSQLException.class)
     public ResponseEntity<BaseExceptionResponse> psqlExceptionHandler(PSQLException e) {
-        return ResponseEntity.status(400).body(
+        return ResponseEntity.badRequest().body(
                 new BaseExceptionResponse(400, e.getLocalizedMessage(), e.getErrorCode())
         );
     }
@@ -64,13 +64,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NoDataFoundException.class)
     public ResponseEntity<BaseExceptionResponse> noDataFoundExceptionHandler(NoDataFoundException e) {
-        return ResponseEntity.status(400).body(
+        return ResponseEntity.badRequest().body(
                 new BaseExceptionResponse(400, e.getMessage(), 10404));
     }
 
     @ExceptionHandler(UnknownDataBaseException.class)
     public ResponseEntity<BaseExceptionResponse> unknownDatabaseExceptionHandler(UnknownDataBaseException e) {
-        return ResponseEntity.status(400).body(
+        return ResponseEntity.badRequest().body(
                 new BaseExceptionResponse(400, e.getMessage(), 10500));
     }
 
@@ -84,14 +84,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NumberFormatException.class)
     public ResponseEntity<BaseExceptionResponse> numberFormatExceptionHandler(NumberFormatException e) {
-        return ResponseEntity.status(400).body(
+        return ResponseEntity.badRequest().body(
                 new BaseExceptionResponse(400, e.getMessage(), 10400));
     }
 
     @ExceptionHandler(BreakingDataRelationshipException.class)
     public ResponseEntity<BaseExceptionResponse> breakingDataRelationshipExceptionHandler(
             BreakingDataRelationshipException e) {
-        return ResponseEntity.status(400).body(
+        return ResponseEntity.badRequest().body(
                 new BaseExceptionResponse(400, e.getMessage(), 10400));
     }
 
@@ -99,28 +99,28 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<BaseExceptionResponse> constraintViolationExceptionHandler(ConstraintViolationException e) {
         StringBuilder message = new StringBuilder();
         e.getConstraintViolations().forEach(violation -> message.append(violation.getMessage()).append("\n"));
-        return ResponseEntity.status(400).body(
+        return ResponseEntity.badRequest().body(
                 new BaseExceptionResponse(400, message.toString(), 10400));
     }
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(
             HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return ResponseEntity.status(400).body(
+        return ResponseEntity.badRequest().body(
                 new BaseExceptionResponse(400, ex.getCause().getMessage(), 10400));
     }
 
     @Override
     protected ResponseEntity<Object> handleMissingServletRequestParameter(
             MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return ResponseEntity.status(400).body(
+        return ResponseEntity.badRequest().body(
                 new BaseExceptionResponse(status.value(), ex.getMessage(), 10400));
     }
 
     @Override
     protected ResponseEntity<Object> handleTypeMismatch(
             TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return ResponseEntity.status(400).body(
+        return ResponseEntity.badRequest().body(
                 new BaseExceptionResponse(status.value(), ex.getMessage(), 10400));
     }
 }

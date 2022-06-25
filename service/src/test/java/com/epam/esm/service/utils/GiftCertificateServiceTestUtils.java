@@ -4,10 +4,12 @@ import com.epam.esm.dto.reponse.GiftCertificateGetResponse;
 import com.epam.esm.dto.request.GiftCertificatePostRequest;
 import com.epam.esm.dto.request.GiftCertificateUpdateRequest;
 import com.epam.esm.entity.GiftCertificateEntity;
+import com.epam.esm.entity.TagEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,6 +40,7 @@ public class GiftCertificateServiceTestUtils {
     }
 
     public static GiftCertificatePostRequest getGiftCertificatePostRequest() {
+        List<TagEntity>tagEntities=new ArrayList<>();
         GiftCertificatePostRequest giftCertificatePostRequest = new GiftCertificatePostRequest();
         giftCertificatePostRequest.setName("Store");
         giftCertificatePostRequest.setDescription("Gift certificate for stores");

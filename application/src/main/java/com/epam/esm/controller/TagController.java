@@ -8,6 +8,7 @@ import com.epam.esm.exception.InvalidInputException;
 import com.epam.esm.exception.NoDataFoundException;
 import com.epam.esm.service.tag.TagService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ public class TagController {
         if(bindingResult.hasErrors())
             throw new InvalidInputException(bindingResult);
         TagGetResponse response = tagService.create(tag);
-        return ResponseEntity.status(201).body(new BaseResponse<>(201, "tag created", response));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponse<>(201, "tag created", response));
     }
 
     @GetMapping(value = "/get")

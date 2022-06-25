@@ -13,7 +13,11 @@ import java.util.Optional;
 public class OrderRepositoryImpl implements OrderRepository {
     @PersistenceContext
     private EntityManager entityManager;
-
+    /**
+     * Creates a new instance of an entity in the database.
+     * @param  order -> Object to create
+     * @return optional id of created object
+     */
     @Override
     public OrderEntity create(OrderEntity order) {
         entityManager.persist(order);
@@ -21,7 +25,12 @@ public class OrderRepositoryImpl implements OrderRepository {
             return order;
         throw new UnknownDataBaseException("there was a problem while creating gift certificate. Try again");
     }
-
+    /**
+     * Gets all existing entities with provided type and provided limit and offset.
+     * @param limit limit of entities
+     * @param offset offset for the entities
+     * @return list of entities
+     */
     @Override
     public List<OrderEntity> getAll(int limit, int offset) {
         return entityManager.createQuery(GET_ALL_ORDERS, OrderEntity.class)
@@ -30,6 +39,11 @@ public class OrderRepositoryImpl implements OrderRepository {
                 .getResultList();
     }
 
+    /**
+     * Gets entity with the provided id.
+     * @param orderId id of the needed object
+     * @return optional object of provided type
+     */
     @Override
     public Optional<OrderEntity> findById(Long orderId) {
         OrderEntity orderEntity = entityManager.find(OrderEntity.class, orderId);
@@ -38,16 +52,13 @@ public class OrderRepositoryImpl implements OrderRepository {
         return Optional.empty();
     }
 
-    @Override
-    public OrderEntity update(OrderEntity obj) {
-        return null;
-    }
-
-    @Override
-    public int delete(Long aLong) {
-        return 0;
-    }
-
+    /**
+     * Get Orders By UserId
+     * @param userId id of the user
+     * @param limit limit to order
+     * @param offset offset for order
+     * @return list of found orders
+     */
     @Override
     public List<OrderEntity> getOrdersByUserId(Long userId, int limit, int offset) {
         return entityManager
@@ -58,6 +69,12 @@ public class OrderRepositoryImpl implements OrderRepository {
                 .getResultList();
     }
 
+    /**
+     * Get Orders By UserId
+     * @param userId id of the user
+     * @param orderId order id
+     * @return list of found orders
+     */
     @Override
     public Optional<OrderEntity> getByUserIdAndOrderId(Long userId, Long orderId){
         List<OrderEntity> orders = entityManager
@@ -71,6 +88,13 @@ public class OrderRepositoryImpl implements OrderRepository {
         return Optional.of(orders.get(0));
     }
 
+    /**
+     * Get By CertificateId
+     * @param certificateId id of certificate
+     * @param limit limit to order
+     * @param offset offset for order
+     * @return list of found orders
+     */
     @Override
     public List<OrderEntity> getByCertificateId(Long certificateId, int limit, int offset) {
         return entityManager
@@ -81,6 +105,12 @@ public class OrderRepositoryImpl implements OrderRepository {
                 .getResultList();
     }
 
+    /**
+     * Get By UserId And CertificateId
+     * @param userId id of the user
+     * @param certificateId id of the certificate
+     * @return list of found orders
+     */
     @Override
     public Optional<OrderEntity> getByUserIdAndCertificateId(Long userId, Long certificateId) {
         List<OrderEntity> resultList

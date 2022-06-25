@@ -6,6 +6,7 @@ import com.epam.esm.dto.request.OrderPostRequest;
 import com.epam.esm.exception.InvalidInputException;
 import com.epam.esm.service.order.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class OrderController {
         if(bindingResult.hasErrors())
             throw new InvalidInputException(bindingResult);
         OrderGetResponse response = orderService.create(orderPostRequest);
-        return ResponseEntity.status(201).body(new BaseResponse<>(201, "certificate ordered", response));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponse<>(201, "certificate ordered", response));
     }
 
     @GetMapping("/get/user")

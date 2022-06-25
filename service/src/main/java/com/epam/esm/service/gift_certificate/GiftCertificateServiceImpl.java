@@ -37,12 +37,13 @@ public class GiftCertificateServiceImpl implements GiftCertificateService{
      * @param createCertificate
      * @return GiftCertificateGetResponse(Gift Certificate)
      */
-    @Override
+
     @Transactional
+    @Override
     public GiftCertificateGetResponse create(GiftCertificatePostRequest createCertificate) {
         List<TagEntity> tagEntities = createCertificate.getTagEntities();
         GiftCertificateEntity certificateEntity = modelMapper.map(createCertificate, GiftCertificateEntity.class);
-        if(createCertificate.getTagEntities() != null && certificateEntity.getTagEntities().size() != 0)
+        if(createCertificate.getTagEntities() != null &&  !certificateEntity.getTagEntities().isEmpty())
             certificateEntity.setTagEntities(createTags(tagEntities));
         GiftCertificateEntity saved = giftCertificateRepository.create(certificateEntity);
         return modelMapper.map(saved, GiftCertificateGetResponse.class);
@@ -64,8 +65,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService{
      * @param certificateId
      * @return id of deleted Gift Certificate
      */
-    @Override
+
     @Transactional
+    @Override
     public int delete(Long certificateId) {
         if(checkExist(certificateId)) {
             try {
@@ -79,13 +81,13 @@ public class GiftCertificateServiceImpl implements GiftCertificateService{
 
     /**
      *
-     * @param searchWord
-     * @param tagName
-     * @param doNameSort
-     * @param doDateSort
-     * @param isDescending
-     * @param limit
-     * @param offset
+     * @param searchWord -> The word which can be searched each field of Gift certificate
+     * @param tagName -> The name of the tag which belongs to the current Gift certificate
+     * @param doNameSort -> Boolean value which can give access to order  Gift certificate by their name
+     * @param doDateSort -> Boolean value which can give access to order  Gift certificate by their date
+     * @param isDescending -> Boolean value which can give access to order  Gift certificate by their name
+     * @param limit -> Numeric value which is limit of pagination
+     * @param offset -> Numeric value offset of Gift certificate list
      * @return Requested Gift Certificate
      */
     @Override
@@ -115,9 +117,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService{
 
     /**
      *
-     * @param update
-     * @param certificateId
-     * @return updated Gift Certificate
+     * @param -> update gift certificate DTO
+     * @param -> certificateId -> numeric value id of Gift certificate
+     * @return ->  Gift Certificate with updated values
      */
     @Override
     @Transactional
@@ -144,9 +146,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService{
 
     /**
      *
-     * @param duration
-     * @param id
-     * @return duration updated Gift Certificate
+     * @param duration -> numeric value which is duration of current Gift certificate
+     * @param id -> numeric value which is id of the Gift certificate
+     * @return -> duration updated Gift Certificate
      */
     @Override
     @Transactional
@@ -164,10 +166,10 @@ public class GiftCertificateServiceImpl implements GiftCertificateService{
 
     /**
      *
-     * @param tags
-     * @param limit
-     * @param offset
-     * @return Gift Certificate list
+     * @param tags -> list of tag names
+     * @param limit -> limit of the pagination
+     * @param offset -> offset of the pagination
+     * @return Filtered Gift Certificate list
      */
     @Override
     public List<GiftCertificateGetResponse> searchWithMultipleTags(
@@ -187,7 +189,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService{
 
     /**
      *
-     * @param tagEntities
+     * @param tagEntities -> List of the tags which are created into the current gift certificate
      * @return created tag list
      */
     private List<TagEntity> createTags(List<TagEntity> tagEntities) {
@@ -208,8 +210,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService{
 
     /**
      *
-     * @param id
-     * @return boolean
+     * @param id -> Id of the searched gift certificate
+     * @return boolean -> find or not
      */
     private boolean checkExist(Long id) {
         return giftCertificateRepository.findById(id).isPresent();

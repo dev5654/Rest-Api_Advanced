@@ -20,17 +20,17 @@ import java.util.Optional;
  */
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
     /**
-     *
-     * @param userPostRequest
-     * @return userGetRequest
+     * @param userPostRequest -> The user value for creating
+     * @return userGetRequest -> Created User
      */
-    @Override
+
     @Transactional
+    @Override
     public UserGetResponse create(UserPostRequest userPostRequest) {
         checkExist(userPostRequest.getUsername());
         UserEntity userEntity = modelMapper.map(userPostRequest, UserEntity.class);
@@ -39,51 +39,37 @@ public class UserServiceImpl implements UserService{
     }
 
     /**
-     *
-     * @param id
-     * @return userGetRequest
+     * @param id -> Id of yhe user
+     * @return userGetRequest -> Found User
      */
     @Override
     public UserGetResponse get(Long id) {
         Optional<UserEntity> userEntity = userRepository.findById(id);
-        if(userEntity.isPresent()) {
+        if (userEntity.isPresent()) {
             return modelMapper.map(userEntity.get(), UserGetResponse.class);
         }
         throw new NoDataFoundException("no user found with id: " + id);
     }
 
-    /**
-     *
-     * @param id
-     * @return 0
-     */
-    @Override
-    @Transactional
-    public int delete(Long id) {
-        return 0;
-    }
 
     /**
-     *
-     * @param limit
-     * @param offset
-     * @return userGetResponse list
+     * @param limit -> limit of the pagination
+     * @param offset -> offset of the pagination
+     * @return userGetResponse list -> found User list
      */
     @Override
     public List<UserGetResponse> getAll(int limit, int offset) {
         List<UserEntity> userEntities = userRepository.getAll(limit, offset);
-        if(userEntities.size() == 0)
-            throw new NoDataFoundException("no users found");
+        if (userEntities.size() == 0) throw new NoDataFoundException("no users found");
         return modelMapper.map(userEntities, new TypeToken<List<UserGetResponse>>() {
         }.getType());
     }
 
     /**
-     *
-     * @param username
+     * @param username -> username
      */
-    void checkExist(String username){
-         if (userRepository.findByName(username).isPresent())
+    void checkExist(String username) {
+        if (userRepository.findByName(username).isPresent())
             throw new DataAlreadyExistException("user with username: \"" + username + "\" already exists");
     }
 }

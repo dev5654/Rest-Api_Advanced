@@ -15,6 +15,11 @@ public class TagRepositoryImpl implements TagRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
+    /**
+     * Creates a new instance of an entity in the database.
+     * @param  tagEntity -> Object to create
+     * @return optional id of created object
+     */
     @Override
     public TagEntity create(TagEntity tagEntity) {
         entityManager.persist(tagEntity);
@@ -23,6 +28,12 @@ public class TagRepositoryImpl implements TagRepository {
         throw new UnknownDataBaseException("there was a problem while creating gift certificate. Try again");
     }
 
+    /**
+     * Gets all existing entities with provided type and provided limit and offset.
+     * @param limit limit of entities
+     * @param offset offset for the entities
+     * @return list of entities
+     */
     @Override
     public List<TagEntity> getAll(int limit, int offset) {
         return entityManager
@@ -32,6 +43,11 @@ public class TagRepositoryImpl implements TagRepository {
                 .getResultList();
     }
 
+    /**
+     * Gets entity with the provided id.
+     * @param id id of the needed object
+     * @return optional object of provided type
+     */
     @Override
     public Optional<TagEntity> findById(Long id) {
         TagEntity tagEntity = entityManager.find(TagEntity.class, id);
@@ -40,11 +56,11 @@ public class TagRepositoryImpl implements TagRepository {
         return Optional.empty();
     }
 
-    @Override
-    public TagEntity update(TagEntity obj) {
-        return null;
-    }
-
+    /**
+     * Deletes entity with the provided id.
+     * @param id id of the object to be deleted
+     * @return the number of rows affected
+     */
     @Override
     public int delete(Long id) {
         return entityManager
@@ -53,6 +69,11 @@ public class TagRepositoryImpl implements TagRepository {
                 .executeUpdate();
     }
 
+    /**
+     * Find By Name
+     * @param name name of the searching order
+     * @return found tags
+     */
     @Override
     public Optional<TagEntity> findByName(String name) {
         try {
@@ -64,6 +85,11 @@ public class TagRepositoryImpl implements TagRepository {
         }
     }
 
+    /**
+     * Get Most Widely User Tag Of User
+     * @param userId -> id of the user
+     * @return found tags
+     */
     @Override
     public List<TagEntity> getMostWidelyUserTagOfUser(Long userId) {
         return entityManager.createNativeQuery(GET_MOST_USED_TAG_OF_USER, TagEntity.class)

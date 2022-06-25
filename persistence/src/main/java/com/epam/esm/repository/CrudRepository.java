@@ -32,17 +32,4 @@ public interface CrudRepository<T, Id>{
      */
     Optional<T> findById(Id id);
 
-    /**
-     * Updates provided entity object.
-     * @param t entity with fields that needed to be updated
-     * @return the number of rows affected
-     */
-    T update(T t);
-
-    /**
-     * Deletes entity with the provided id.
-     * @param id id of the object to be deleted
-     * @return the number of rows affected
-     */
-    int delete(Id id);
 }

@@ -29,10 +29,10 @@ public class TagServiceImpl implements TagService {
 
     /**
      *
-     * @param createTag
-     * @return TagGetResponse
+     * @param createTag -> Tag with fields
+     * @return TagGetResponse -> Created tag
      */
-    @Override
+
     @Transactional
     public TagGetResponse create(TagPostRequest createTag) {
         TagEntity tagEntity = modelMapper.map(createTag, TagEntity.class);
@@ -42,32 +42,37 @@ public class TagServiceImpl implements TagService {
 
     /**
      *
-     * @param tagId
-     * @return TagGetResponse
+     * @param tagId -> Id of the tag
+     * @return TagGetResponse -> Found tag
      */
-    @Override
+
     public TagGetResponse get(Long tagId) {
-        Optional<TagEntity> tagOptional = tagRepository.findById(tagId);
-        if(tagOptional.isPresent())
+       Optional<TagEntity> tagOptional = tagRepository.findById(tagId);
+
+      /*  if(tagOptional.isPresent())
             return modelMapper.map(tagOptional.get(), TagGetResponse.class);
-        throw new NoDataFoundException("no tag found with id: " + tagId);
+        throw new NoDataFoundException("no tag found with id: " + tagId);*/
+
+        return tagOptional.map(tag -> modelMapper.map(tag, TagGetResponse.class)).orElseThrow(() ->
+                new NoDataFoundException("no tag found with id: " + tagId));
     }
 
     /**
      *
-     * @param tagId
-     * @return deletedTagId
+     * @param tagId -> Id of the tag
+     * @return deletedTagId -> The tag values which was deleted
      */
-    @Override
+
     @Transactional
+    @Override
     public int delete(Long tagId) {
         return tagRepository.delete(tagId);
     }
 
     /**
      *
-     * @param limit
-     * @param offset
+     * @param limit -> limit of the pagination
+     * @param offset -> offset of the pagination
      * @return TagGetResponse list
      */
     @Override
@@ -78,7 +83,7 @@ public class TagServiceImpl implements TagService {
 
     /**
      *
-     * @param userId
+     * @param userId -> Id of the user
      * @return list of most widely used tags list
      */
     @Override

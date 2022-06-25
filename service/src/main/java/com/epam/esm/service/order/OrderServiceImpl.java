@@ -19,18 +19,22 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class -> OrderServiceImpl
+ */
 @Service
 @RequiredArgsConstructor
-public class OrderServiceImpl implements OrderService{
+public class OrderServiceImpl implements OrderService {
     private final ModelMapper modelMapper;
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final GiftCertificateRepository giftCertificateRepository;
 
-    @Override
+
     @Transactional
+    @Override
     public OrderGetResponse create(OrderPostRequest orderPostRequest) {
-        validator(orderPostRequest);
+        validate(orderPostRequest);
         GiftCertificateEntity certificateEntity = giftCertificateRepository.findById(orderPostRequest.getCertificateId()).get();
         UserEntity user = userRepository.findById(orderPostRequest.getUserId()).get();
         OrderEntity order =
@@ -42,21 +46,17 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public OrderGetResponse get(Long id) {
         Optional<OrderEntity> order = orderRepository.findById(id);
-        if(order.isPresent()) {
+        if (order.isPresent()) {
             return modelMapper.map(order.get(), OrderGetResponse.class);
         }
         throw new NoDataFoundException("order with id: " + id + " not found");
     }
 
-    @Override
-    public int delete(Long id) {
-        return 0;
-    }
 
     @Override
     public List<OrderGetResponse> getOrdersByUserId(Long userId, int limit, int offset) {
         List<OrderEntity> orders = orderRepository.getOrdersByUserId(userId, limit, offset);
-        if(orders.isEmpty()){
+        if (orders.isEmpty()) {
             throw new NoDataFoundException("no orders found for this user with id: " + userId);
         }
         return modelMapper.map(orders, new TypeToken<List<OrderGetResponse>>() {
@@ -66,7 +66,7 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public OrderGetResponse getByUserIdAndOrderId(Long userId, Long orderId) {
         Optional<OrderEntity> order = orderRepository.getByUserIdAndOrderId(userId, orderId);
-        if(order.isPresent()){
+        if (order.isPresent()) {
             return modelMapper.map(order.get(), OrderGetResponse.class);
         }
         throw new NoDataFoundException("no order found with id: " + orderId + " for this user");
@@ -75,7 +75,7 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public List<OrderGetResponse> getByCertificateId(Long certificateId, int limit, int offset) {
         List<OrderEntity> ordersForCertificate = orderRepository.getByCertificateId(certificateId, limit, offset);
-        if(ordersForCertificate.isEmpty()){
+        if (ordersForCertificate.isEmpty()) {
             throw new NoDataFoundException("no orders for certificate with id: " + certificateId + " found");
         }
         return modelMapper.map(ordersForCertificate, new TypeToken<List<OrderGetResponse>>() {
@@ -84,14 +84,14 @@ public class OrderServiceImpl implements OrderService{
 
 
     @Override
-    public void validator(OrderPostRequest orderPostRequest) {
-        if(userRepository.findById(orderPostRequest.getUserId()).isEmpty())
+    public void validate(OrderPostRequest orderPostRequest) {
+        if (userRepository.findById(orderPostRequest.getUserId()).isEmpty())
             throw new NoDataFoundException(
                     "there is not user with id: " + orderPostRequest.getUserId() + " for this order");
-        if(giftCertificateRepository.findById(orderPostRequest.getCertificateId()).isEmpty())
+        if (giftCertificateRepository.findById(orderPostRequest.getCertificateId()).isEmpty())
             throw new NoDataFoundException(
                     "ordered certificate with id: " + orderPostRequest.getCertificateId() + " does not exist");
-        if(orderRepository.getByUserIdAndCertificateId(
+        if (orderRepository.getByUserIdAndCertificateId(
                 orderPostRequest.getUserId(), orderPostRequest.getCertificateId()).isPresent())
             throw new DataAlreadyExistException("this user already ordered this type of certificate");
     }

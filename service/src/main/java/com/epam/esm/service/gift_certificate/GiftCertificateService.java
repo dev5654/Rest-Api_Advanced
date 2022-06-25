@@ -3,11 +3,16 @@ package com.epam.esm.service.gift_certificate;
 import com.epam.esm.dto.reponse.GiftCertificateGetResponse;
 import com.epam.esm.dto.request.GiftCertificatePostRequest;
 import com.epam.esm.dto.request.GiftCertificateUpdateRequest;
-import com.epam.esm.service.base.BaseService;
 
 import java.util.List;
 
-public interface GiftCertificateService extends BaseService<GiftCertificatePostRequest, GiftCertificateGetResponse> {
+public interface GiftCertificateService /*extends BaseService<GiftCertificatePostRequest, GiftCertificateGetResponse>*/ {
+
+    GiftCertificateGetResponse create(GiftCertificatePostRequest postRequest);
+
+    GiftCertificateGetResponse get(Long id);
+
+    int delete(Long id);
 
     List<GiftCertificateGetResponse> getAll(
             String searchWord, String tagName, boolean doNameSort, boolean doDateSort,

@@ -2,11 +2,15 @@ package com.epam.esm.service.order;
 
 import com.epam.esm.dto.reponse.OrderGetResponse;
 import com.epam.esm.dto.request.OrderPostRequest;
-import com.epam.esm.service.base.BaseService;
 
 import java.util.List;
 
-public interface OrderService extends BaseService<OrderPostRequest, OrderGetResponse> {
+public interface OrderService /*extends BaseService<OrderPostRequest, OrderGetResponse>*/ {
+
+    OrderGetResponse create(OrderPostRequest p);
+
+    OrderGetResponse get(Long id);
+
 
     List<OrderGetResponse> getOrdersByUserId(Long userId, int limit, int offset);
 
@@ -14,6 +18,6 @@ public interface OrderService extends BaseService<OrderPostRequest, OrderGetResp
 
     List<OrderGetResponse> getByCertificateId(Long certificateId, int limit, int offset);
 
-    void validator(OrderPostRequest orderPostRequest);
+    void validate(OrderPostRequest orderPostRequest);
 
 }

@@ -1,6 +1,7 @@
+/*
 package com.epam.esm.repository.gift_certificate;
 
-public interface GiftCertificateQueries {
+public class GiftCertificateQueries {
 
     String GET_ALL = "select * from gift_certificate gc";
     String DELETE = "delete from GiftCertificateEntity where id = :id";
@@ -28,3 +29,4 @@ public interface GiftCertificateQueries {
     String NO_ORDER = "";
 
 }
+*/
